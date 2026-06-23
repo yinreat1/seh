@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şehzade Yemek Üretim</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* TEMEL AYARLAR VE DEĞİŞKENLER */
+        :root {
+            --primary: #cf9633;
+            --primary-hover: #b58028;
+            --bg-color: #fcfaf5;
+            --surface: #ffffff;
+            --text-dark: #2d2d2d;
+            --text-light: #6b6b6b;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        /* YUMUŞAK KAYDIRMA */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--text-dark);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER & MENÜ */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #fff; /* Şeffaf logolar için beyaz arka plan desteği */
+        }
+
+        .logo span {
+            color: var(--text-dark);
+        }
+
+        .logo span b {
+            color: var(--primary);
+            display: block;
+            font-size: 0.6rem;
+            font-family: var(--font-body);
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .menu-btn {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* MOBİL MENÜ STİLLERİ */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--surface);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .mobile-nav.active {
+            display: flex;
+        }
+
+        .mobile-nav a {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .mobile-nav a:hover {
+            color: var(--primary);
+            background-color: #fafafa;
+        }
+
+        /* KÜÇÜK ETİKETLER */
+        .badge {
+            display: inline-block;
+            background-color: rgba(207, 150, 51, 0.1);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .badge i { margin-right: 5px; }
+
+        /* HERO BÖLÜMÜ */
+        .hero {
+            padding: 40px 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #e0e0e0;
+            color: var(--text-dark);
+        }
+
+        .hero-features {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .hero-features i { margin-right: 5px; }
+
+        .hero-image {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: white;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image img {
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        /* BÖLÜM BAŞLIKLARI */
+        .section-header {
+            margin-bottom: 30px;
+            padding-top: 80px;
+            margin-top: -30px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.8rem;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ÖZELLİK KARTLARI */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .feature-card i {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            background: rgba(207, 150, 51, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-family: var(--font-body);
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* YEMEKLERİMİZ BÖLÜMÜ */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .menu-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            padding-bottom: 15px;
+        }
+
+        .menu-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+        }
+
+        .menu-card-content {
+            padding: 15px;
+        }
+
+        .menu-card h3 {
+            font-size: 1rem;
+            font-family: var(--font-body);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .menu-card p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* İSTATİSTİKLER */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: var(--surface);
+            padding: 30px 20px;
+            border-radius: var(--radius-lg);
+            margin: 50px 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-item h4 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* İLETİŞİM BÖLÜMÜ */
+        .contact-info {
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            background: rgba(207, 150, 51, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item h4 {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+
+        .contact-item p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* FORM */
+        .contact-form {
+            background: var(--surface);
+            padding: 25px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #eaeaea;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            background: #fafafa;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            background: white;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 60px;
+            padding: 40px 20px;
+            background: var(--surface);
+            border-top: 1px solid #eaeaea;
+        }
+
+        .footer-desc {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin: 15px 0 25px 0;
+        }
+
+        .footer-menu {
+            list-style: none;
+        }
+
+        .footer-menu li {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .footer-menu li a:hover {
+            color: var(--primary);
+        }
+
+        /* DESKTOP MEDIA QUERY */
+        @media (min-width: 768px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .menu-grid { grid-template-columns: repeat(4, 1fr); }
+            .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+            .form-row { grid-template-columns: 1fr 1fr; }
+            .menu-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Şehzade Yemek Logo">
+            <span>ŞEHZADE<br><b>YEMEK ÜRETİM</b></span>
+        </div>
+        <button class="menu-btn" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+        
+        <nav class="mobile-nav" id="mobileMenu">
+            <a href="#hakkimizda">Hakkımızda</a>
+            <a href="#hizmetler">Hizmetlerimiz</a>
+            <a href="#yemekler">Yemeklerimiz</a>
+            <a href="#iletisim">İletişim</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <section class="hero">
+            <span class="badge"><i class="fa-solid fa-award"></i> PROFESYONEL YEMEK HİZMETLERİ</span>
+            <h1>Toplu Yemek Üretimi ve <span>Catering</span> Hizmetleri</h1>
+            <p>Şehzade Yemek Üretim olarak; hijyenik üretim tesisimiz, uzman aşçı kadromuz ve titiz lojistik sistemimizle güvenilir, lezzetli ve dengeli yemek çözümleri sunuyoruz.</p>
+            
+            <div class="hero-buttons">
+                <a href="#iletisim" class="btn btn-primary">Teklif Al <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="https://wa.me/905555555555" target="_blank" class="btn btn-outline"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size:1.2rem;"></i> WhatsApp</a>
+            </div>
+
+            <div class="hero-features">
+                <span><i class="fa-solid fa-certificate"></i> ISO Sertifikalı</span>
+                <span><i class="fa-regular fa-clock"></i> Zamanında Teslimat</span>
+            </div>
+
+            <div class="hero-image">
+                <img src="hero.png" alt="Şehzade Yemek Üretim Tesisleri">
+            </div>
+        </section>
+
+        <section id="hakkimizda" class="section-header">
+            <span class="badge" style="background:none; padding:0; font-size:0.7rem;">HAKKIMIZDA</span>
+            <h2>Geleneksel lezzeti, profesyonel disiplinle buluşturuyoruz.</h2>
+            <p style="margin-bottom: 30px;">Şehzade Yemek Üretim, yılların verdiği tecrübeyle Türkiye'nin önde gelen kurumlarına profesyonel toplu yemek ve catering hizmetleri sunmaktadır. HACCP standartlarına uygun üretim tesisimizde, taze ve seçkin ürünlerle hazırlanan menülerimiz, alanında uzman diyetisyenlerimiz tarafından dengeli olacak şekilde planlanır.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fa-solid fa-award"></i>
+                    <h3>HACCP & ISO 22000</h3>
+                    <p>Sertifikalı üretim süreçleri</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-hat-chef"></i>
+                    <h3>Uzman Şef Kadrosu</h3>
+                    <p>Deneyimli mutfak ekibi</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h3>Soğuk Zincir Lojistik</h3>
+                    <p>Güvenli teslimat sistemi</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <h3>Diyetisyen Onaylı</h3>
+                    <p>Dengeli ve sağlıklı menüler</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="hizmetler" class="section-header">
+            <span class="badge" style="background:none; padding:0; font-size:0.7rem;">HİZMETLERİMİZ</span>
+            <h2>Her ölçekte işletmeye uygun yemek çözümleri.</h2>
+            
+            <div class="features-grid" style="margin-top: 30px;">
+                <div class="feature-card">
+                    <i class="fa-solid fa-utensils"></i>
+                    <h3>Toplu Yemek Üretimi</h3>
+                    <p>Modern mutfak altyapımızla günlük binlerce kişilik üretim kapasitesi.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>Personel Yemek Hizmeti</h3>
+                    <p>Fabrika ve ofislere düzenli, dengeli ve lezzetli menüler.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-building"></i>
+                    <h3>Profesyonel Catering</h3>
+                    <p>Toplantı, seminer ve etkinlikler için profesyonel sunum çözümleri.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-party-horn"></i>
+                    <h3>Özel Organizasyon Yemekleri</h3>
+                    <p>Düğün, açılış ve davetler için özel menü tasarımları.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-truck"></i>
+                    <h3>Taşımalı Yemek Hizmeti</h3>
+                    <p>Sıcaklık zinciri korunarak güvenli ve zamanında teslimat.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="yemekler" class="section-header">
+            <span class="badge" style="background:none; padding:0; font-size:0.7rem;">YEMEKLERİMİZ</span>
+            <h2>Haftalık menülerimizden öne çıkan tabaklar.</h2>
+            <p style="margin-bottom: 30px;">Her gün taze malzemelerle özenle hazırlanan 6 farklı menü seçeneğimiz.</p>
+
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <img src="1000039087.jpg" alt="Tavuk Sote Menüsü">
+                    <div class="menu-card-content">
+                        <h3>Tavuk Sote Menüsü</h3>
+                        <p>Tavuk sote, pirinç pilavı ve ayran.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="1000039092.jpg" alt="Tas Kebabı Menüsü">
+                    <div class="menu-card-content">
+                        <h3>Tas Kebabı Menüsü</h3>
+                        <p>Tas kebabı, bulgur pilavı ve mevsim salatası.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="1000039088.jpg" alt="Karnıyarık Menüsü">
+                    <div class="menu-card-content">
+                        <h3>Karnıyarık Menüsü</h3>
+                        <p>Karnıyarık, pirinç pilavı ve cacık.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="1000039089.jpg" alt="Fırında Tavuk Menüsü">
+                    <div class="menu-card-content">
+                        <h3>Fırında Tavuk Menüsü</h3>
+                        <p>Fırında tavuk, makarna, yoğurt ve tatlı.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="1000039090.jpg" alt="Musakka Menüsü">
+                    <div class="menu-card-content">
+                        <h3>Musakka Menüsü</h3>
+                        <p>Musakka, pirinç pilavı ve mevsim salatası.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="1000039091.jpg" alt="Misket Köfte Menüsü">
+                    <div class="menu-card-content">
+                        <h3>Misket Köfte Menüsü</h3>
+                        <p>Misket köfte, sebzeli bulgur pilavı ve ayran.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>5.000+</h4>
+                <p>GÜNLÜK ÜRETİM</p>
+            </div>
+            <div class="stat-item">
+                <h4>12.000+</h4>
+                <p>MUTLU MÜŞTERİ</p>
+            </div>
+            <div class="stat-item">
+                <h4>80+</h4>
+                <p>KURUMSAL REFERANS</p>
+            </div>
+            <div class="stat-item">
+                <h4>15</h4>
+                <p>YILLIK TECRÜBE</p>
+            </div>
+        </div>
+
+        <section id="iletisim" class="section-header">
+            <span class="badge" style="background:none; padding:0; font-size:0.7rem;">İLETİŞİM</span>
+            <h2>İşletmeniz için özel teklif alın.</h2>
+            <p style="margin-bottom: 30px;">Menülerimiz, üretim kapasitemiz ve fiyatlandırma hakkında detaylı bilgi için bize ulaşın. Aynı gün geri dönüş yapıyoruz.</p>
+
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>Telefon</h4>
+                            <p>+90 555 555 55 55</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>E-posta</h4>
+                            <p>info@sehzadeyemek.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4>Adres</h4>
+                            <p>Silopi Organize Sanayi Bölgesi, Şırnak</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <div>
+                            <h4>Çalışma Saatleri</h4>
+                            <p>Pzt - Cmt · 08:00 - 18:00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <form action="mailto:info@sehzadeyemek.com" method="POST" enctype="text/plain">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Ad Soyad</label>
+                                <input type="text" name="Ad_Soyad" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Firma</label>
+                                <input type="text" name="Firma">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Telefon</label>
+                                <input type="tel" name="Telefon" required>
+                            </div>
+                            <div class="form-group">
+                                <label>E-posta</label>
+                                <input type="email" name="Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mesajınız</label>
+                            <textarea name="Mesaj" placeholder="Kaç kişilik hizmet, hangi konum, hangi gün..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Teklif Talebi Gönder <i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <img src="logo.png" alt="Şehzade Yemek Logo">
+                <span>ŞEHZADE<br><b>YEMEK ÜRETİM</b></span>
+            </div>
+            <p class="footer-desc">Profesyonel toplu yemek üretimi ve kurumsal catering hizmetleri.</p>
+            
+            <h4 style="margin-bottom: 15px; font-size: 0.9rem; letter-spacing: 1px;">MENÜ</h4>
+            <ul class="footer-menu">
+                <li><a href="#hakkimizda">Hakkımızda</a></li>
+                <li><a href="#hizmetler">Hizmetlerimiz</a></li>
+                <li><a href="#yemekler">Yemeklerimiz</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuLinks = mobileMenu.querySelectorAll('a');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
